@@ -1,0 +1,378 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+/* Header */
+.main-header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.main-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.main-title-en {
+    font-size: 42px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.subtitle {
+    font-size: 18px;
+    margin: 5px 0;
+    opacity: 0.9;
+}
+
+/* Container */
+.container {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Config Section */
+.config-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.config-section h3 {
+    color: #2a5298;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.config-options {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.radio-option:hover {
+    border-color: #2a5298;
+    background: #e3f2fd;
+}
+
+.radio-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.radio-option input[type="radio"]:checked + span {
+    font-weight: bold;
+    color: #2a5298;
+}
+
+.upload-section, .rtsp-section {
+    margin-top: 20px;
+}
+
+.upload-section input[type="file"],
+.rtsp-section input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.info-text {
+    margin-top: 10px;
+    color: #f57c00;
+    font-size: 14px;
+}
+
+/* Main Content */
+.main-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 968px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Video Section */
+.video-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.video-section h3 {
+    color: #2a5298;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.video-container {
+    position: relative;
+    background: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#videoElement {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.controls {
+    display: flex;
+    gap: 15px;
+}
+
+.btn {
+    flex: 1;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.4);
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: #666;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #d32f2f;
+    color: white;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Stats Section */
+.stats-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.stats-section h3 {
+    color: #2a5298;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Status Card */
+.status-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 5px solid;
+}
+
+.status-normal {
+    background: #e8f5e9;
+    border-color: #388e3c;
+}
+
+.status-elevated {
+    background: #fff3e0;
+    border-color: #f57c00;
+}
+
+.status-high {
+    background: #ffebee;
+    border-color: #d32f2f;
+}
+
+.status-icon {
+    font-size: 36px;
+}
+
+.status-level {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.status-detail {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.metric-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid #e0e0e0;
+}
+
+.metric-value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #2a5298;
+    margin-bottom: 5px;
+}
+
+.metric-label {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Alerts */
+.alerts-section h4 {
+    color: #2a5298;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.alerts-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.alert-item {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.alert-high {
+    background: #ffebee;
+    border-left: 4px solid #d32f2f;
+}
+
+.alert-medium {
+    background: #fff3e0;
+    border-left: 4px solid #f57c00;
+}
+
+.no-alerts {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+}
+
+/* Chart Section */
+.chart-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chart-section h3 {
+    color: #2a5298;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+#threatChart {
+    max-height: 300px;
+}
+
+/* Footer */
+.footer {
+    background: #1e3c72;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.footer p {
+    margin: 5px 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #2a5298;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1e3c72;
+}

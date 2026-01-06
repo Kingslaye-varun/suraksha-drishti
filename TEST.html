@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webcam Test - Suraksha Drishti</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+            border: 3px solid #2a5298;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #1e3c72;
+        }
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .success {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+        .error {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛡️ Suraksha Drishti - Webcam Test</h1>
+    <p>This is a simple test to verify webcam access works in your browser.</p>
+    
+    <div id="status" class="status info">
+        Click "Start Webcam" to test camera access
+    </div>
+    
+    <video id="video" autoplay playsinline style="display: none;"></video>
+    
+    <button id="startBtn" onclick="startWebcam()">Start Webcam</button>
+    <button id="stopBtn" onclick="stopWebcam()" style="display: none;">Stop Webcam</button>
+    
+    <div style="margin-top: 30px; text-align: left; background: #f5f5f5; padding: 20px; border-radius: 8px;">
+        <h3>Troubleshooting:</h3>
+        <ul>
+            <li><strong>Permission Denied:</strong> Check browser settings and allow camera access</li>
+            <li><strong>Not Working:</strong> Try Chrome or Firefox (latest version)</li>
+            <li><strong>HTTPS Required:</strong> Some browsers need HTTPS. Deploy online or use local server</li>
+            <li><strong>No Camera Found:</strong> Check if camera is connected and not used by another app</li>
+        </ul>
+        
+        <h3>If this test works:</h3>
+        <p>✅ Your browser supports webcam access<br>
+        ✅ The main Suraksha Drishti app will work<br>
+        ✅ You can proceed with deployment</p>
+        
+        <h3>Next Steps:</h3>
+        <p>1. Close this test page<br>
+        2. Open <strong>index.html</strong><br>
+        3. Click "Start Monitoring"<br>
+        4. Enjoy the full Suraksha Drishti experience!</p>
+    </div>
+
+    <script>
+        let stream = null;
+        const video = document.getElementById('video');
+        const status = document.getElementById('status');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+
+        async function startWebcam() {
+            try {
+                status.className = 'status info';
+                status.textContent = 'Requesting camera access...';
+                
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: 640, height: 480 },
+                    audio: false
+                });
+                
+                video.srcObject = stream;
+                video.style.display = 'block';
+                
+                status.className = 'status success';
+                status.textContent = '✅ SUCCESS! Webcam is working perfectly!';
+                
+                startBtn.style.display = 'none';
+                stopBtn.style.display = 'inline-block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                status.className = 'status error';
+                status.textContent = '❌ ERROR: ' + error.message + ' - Check troubleshooting guide below';
+            }
+        }
+
+        function stopWebcam() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.style.display = 'none';
+                
+                status.className = 'status info';
+                status.textContent = 'Webcam stopped. Click "Start Webcam" to test again.';
+                
+                startBtn.style.display = 'inline-block';
+                stopBtn.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

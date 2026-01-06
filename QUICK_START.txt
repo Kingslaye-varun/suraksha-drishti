@@ -1,0 +1,63 @@
+================================================================================
+🛡️ SURAKSHA DRISHTI - QUICK START (2 MINUTES)
+================================================================================
+
+STEP 1: Start Backend (Terminal/CMD)
+-------------------------------------
+cd suraksha-drishti-web\api
+pip install -r requirements.txt
+python app.py
+
+Wait for: "Server starting on http://localhost:5000"
+
+STEP 2: Open Frontend (Browser)
+--------------------------------
+Double-click: suraksha-drishti-web\index.html
+Click: "Start Monitoring"
+Allow: Webcam access
+
+DONE! ✅ Real AI detection working!
+
+================================================================================
+ALTERNATIVE: Use START_BACKEND.bat
+================================================================================
+
+Double-click: START_BACKEND.bat
+Then open: index.html
+
+================================================================================
+WHAT YOU'LL SEE:
+================================================================================
+
+✅ Professional UI with Hindi + English
+✅ Live webcam feed
+✅ Real-time threat level (0-100%)
+✅ People count with gender
+✅ Weapon detection alerts
+✅ Violence detection alerts
+✅ Threat analysis chart
+
+================================================================================
+TROUBLESHOOTING:
+================================================================================
+
+❌ Backend won't start?
+   → Install Python 3.8-3.12
+   → Run: pip install flask flask-cors tensorflow opencv-python ultralytics
+
+❌ Webcam not working?
+   → Allow camera permission in browser
+   → Try Chrome or Firefox
+
+❌ "API call failed"?
+   → Backend not running
+   → Start: python api/app.py
+
+================================================================================
+FOR NETLIFY (DEMO MODE):
+================================================================================
+
+Already deployed! Just visit your Netlify URL.
+Note: Uses simulated AI (no backend needed)
+
+================================================================================

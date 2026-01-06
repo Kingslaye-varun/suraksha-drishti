@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सुरक्षा दृष्टि - Suraksha Drishti</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-content">
+            <h1 class="main-title">🛡️ सुरक्षा दृष्टि</h1>
+            <h2 class="main-title-en">Suraksha Drishti</h2>
+            <p class="subtitle">AI-Powered Security Surveillance System</p>
+            <p class="subtitle">Government of India Initiative</p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Camera Configuration -->
+        <section class="config-section">
+            <h3>📹 Camera Configuration</h3>
+            <div class="config-options">
+                <label class="radio-option">
+                    <input type="radio" name="source" value="webcam" checked>
+                    <span>Webcam</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="source" value="video">
+                    <span>Upload Video</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="source" value="rtsp">
+                    <span>IP Camera (RTSP)</span>
+                </label>
+            </div>
+
+            <!-- Video Upload -->
+            <div id="videoUpload" class="upload-section" style="display: none;">
+                <input type="file" id="videoFile" accept="video/*">
+            </div>
+
+            <!-- RTSP Config -->
+            <div id="rtspConfig" class="rtsp-section" style="display: none;">
+                <input type="text" id="rtspUrl" placeholder="rtsp://username:password@ip:port/stream">
+                <p class="info-text">⚠️ RTSP requires backend server. Use webcam or video upload for browser-only demo.</p>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Video Feed -->
+            <div class="video-section">
+                <h3>📺 Live Monitoring</h3>
+                <div class="video-container">
+                    <video id="videoElement" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <div id="overlay" class="overlay"></div>
+                </div>
+                <div class="controls">
+                    <button id="startBtn" class="btn btn-primary">▶️ Start Monitoring</button>
+                    <button id="stopBtn" class="btn btn-secondary" disabled>⏹️ Stop</button>
+                </div>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-section">
+                <h3>📊 Real-Time Analysis</h3>
+                
+                <!-- Status Card -->
+                <div id="statusCard" class="status-card status-normal">
+                    <div class="status-icon">✅</div>
+                    <div class="status-text">
+                        <div class="status-level">NORMAL</div>
+                        <div class="status-detail">No threats detected</div>
+                    </div>
+                </div>
+
+                <!-- Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="threatLevel">0%</div>
+                        <div class="metric-label">Threat Level</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="incidentCount">0</div>
+                        <div class="metric-label">Incidents</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="weaponCount">0</div>
+                        <div class="metric-label">Weapons</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="peopleCount">0</div>
+                        <div class="metric-label">People</div>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <div class="alerts-section">
+                    <h4>🚨 Recent Alerts</h4>
+                    <div id="alertsList" class="alerts-list">
+                        <p class="no-alerts">No alerts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <section class="chart-section">
+            <h3>📈 Threat Analysis</h3>
+            <canvas id="threatChart"></canvas>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 Suraksha Drishti - Government of India Initiative</p>
+        <p>Powered by AI & Machine Learning</p>
+    </footer>
+
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+    <script src="app.js"></script>
+</body>
+</html>
