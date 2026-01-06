@@ -1,88 +1,94 @@
 """
 Suraksha Drishti - Backend API
 Flask server for AI model inference
+OPTIMIZED FOR RENDER FREE TIER
 """
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import cv2
 import numpy as np
-import tensorflow as tf
-import base64
 import os
+import base64
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for browser requests
+CORS(app)
 
-# Load models
-print("Loading AI models...")
+# Global variables for models (lazy loading)
+models_loaded = False
+cnn_model = None
+lstm_model = None
+gender_model = None
+yolo_model = None
+face_cascade = None
 
-# Find model helper
-def find_model(filename):
-    paths = [
-        filename,
-        os.path.join('..', '..', 'complete new', 'models', filename),
-        os.path.join('..', '..', 'new models', filename),
-        os.path.join('models', filename)
-    ]
-    for path in paths:
-        if os.path.exists(path):
-            return path
-    return None
+print("🛡️ Suraksha Drishti API Starting...")
+print("Models will load on first request (lazy loading)")
 
-# Load models
-try:
-    # CNN Model
-    cnn_path = find_model('mobilenet_feature_extractor.tflite')
-    if cnn_path:
-        cnn_model = tf.lite.Interpreter(model_path=cnn_path)
-        cnn_model.allocate_tensors()
-        print("✅ CNN model loaded")
-    else:
-        cnn_model = None
-        print("❌ CNN model not found")
+def load_models_lazy():
+    """Load models only when first request comes - prevents timeout"""
+    global models_loaded, cnn_model, lstm_model, gender_model, yolo_model, face_cascade
     
-    # LSTM Model
-    lstm_path = find_model('violence_detection_lstm.h5')
-    if lstm_path:
-        lstm_model = tf.keras.models.load_model(lstm_path, compile=False)
-        print("✅ LSTM model loaded")
-    else:
-        lstm_model = None
-        print("❌ LSTM model not found")
+    if models_loaded:
+        return
     
-    # Gender Model
-    gender_path = find_model('gender_classification.tflite')
-    if gender_path:
-        gender_model = tf.lite.Interpreter(model_path=gender_path)
-        gender_model.allocate_tensors()
-        print("✅ Gender model loaded")
-    else:
-        gender_model = None
-        print("❌ Gender model not found")
+    print("Loading AI models...")
     
-    # YOLO Model
+    import tensorflow as tf
+    
+    # Find model helper
+    def find_model(filename):
+        paths = [
+            filename,
+            os.path.join('models', filename)
+        ]
+        for path in paths:
+            if os.path.exists(path):
+                return path
+        return None
+    
     try:
-        from ultralytics import YOLO
-        yolo_path = find_model('yolov8n.pt')
-        if yolo_path:
-            yolo_model = YOLO(yolo_path, verbose=False)
-            print("✅ YOLO model loaded")
-        else:
-            yolo_model = YOLO('yolov8n.pt', verbose=False)
-            print("✅ YOLO model downloaded")
-    except:
-        yolo_model = None
-        print("❌ YOLO model failed")
-    
-    # Face Cascade
-    face_cascade = cv2.CascadeClassifier(
-        cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
-    )
-    print("✅ Face detection loaded")
-    
-except Exception as e:
-    print(f"❌ Error loading models: {e}")
+        # CNN Model
+        cnn_path = find_model('mobilenet_feature_extractor.tflite')
+        if cnn_path:
+            cnn_model = tf.lite.Interpreter(model_path=cnn_path)
+            cnn_model.allocate_tensors()
+            print("✅ CNN loaded")
+        
+        # LSTM Model
+        lstm_path = find_model('violence_detection_lstm.h5')
+        if lstm_path:
+            lstm_model = tf.keras.models.load_model(lstm_path, compile=False)
+            print("✅ LSTM loaded")
+        
+        # Gender Model
+        gender_path = find_model('gender_classification.tflite')
+        if gender_path:
+            gender_model = tf.lite.Interpreter(model_path=gender_path)
+            gender_model.allocate_tensors()
+            print("✅ Gender loaded")
+        
+        # YOLO Model
+        try:
+            from ultralytics import YOLO
+            yolo_path = find_model('yolov8n.pt')
+            if yolo_path:
+                yolo_model = YOLO(yolo_path, verbose=False)
+                print("✅ YOLO loaded")
+        except:
+            print("⚠️ YOLO skipped")
+        
+        # Face Cascade
+        face_cascade = cv2.CascadeClassifier(
+            cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+        )
+        print("✅ Face detection loaded")
+        
+        models_loaded = True
+        print("✅ All models loaded successfully!")
+        
+    except Exception as e:
+        print(f"❌ Error loading models: {e}")
 
 # Sequence buffer for LSTM
 SEQ_LENGTH = 30
@@ -98,11 +104,23 @@ DANGEROUS_CLASSES = {
     'sports ball': 'Projectile'
 }
 
+@app.route('/')
+def index():
+    return jsonify({
+        'name': 'Suraksha Drishti API',
+        'version': '1.0',
+        'status': 'running'
+    })
+
 @app.route('/api/health', methods=['GET'])
 def health():
-    """Health check endpoint"""
+    """Health check endpoint - loads models if not loaded"""
+    if not models_loaded:
+        load_models_lazy()
+    
     return jsonify({
         'status': 'ok',
+        'models_loaded': models_loaded,
         'models': {
             'cnn': cnn_model is not None,
             'lstm': lstm_model is not None,
@@ -115,6 +133,10 @@ def health():
 @app.route('/api/detect', methods=['POST'])
 def detect():
     """Main detection endpoint"""
+    # Load models on first request
+    if not models_loaded:
+        load_models_lazy()
+    
     try:
         # Get image from request
         data = request.json
@@ -239,21 +261,13 @@ def detect():
         print(f"Detection error: {e}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/')
-def index():
-    return jsonify({
-        'name': 'Suraksha Drishti API',
-        'version': '1.0',
-        'status': 'running'
-    })
-
 if __name__ == '__main__':
     print("\n" + "="*60)
     print("🛡️ SURAKSHA DRISHTI API SERVER")
     print("="*60)
-    print("Server starting on http://localhost:5000")
-    print("API endpoint: http://localhost:5000/api/detect")
-    print("Health check: http://localhost:5000/api/health")
+    print("Server starting...")
+    print("Models will load on first request")
     print("="*60 + "\n")
     
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=False)
+
